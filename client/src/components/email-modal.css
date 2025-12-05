@@ -1,0 +1,119 @@
+.email-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 7, 15, 0.82);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 40;
+  }
+  
+  .email-modal {
+    width: min(1100px, 96vw);
+    height: min(90vh, 900px);
+    background: linear-gradient(145deg, #050814, #0d1220);
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    box-shadow:
+      0 24px 80px rgba(15, 23, 42, 0.9),
+      0 0 0 1px rgba(15, 23, 42, 0.8);
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  .email-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    margin-bottom: 8px;
+  }
+  
+  .email-modal-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .email-modal-sender {
+    font-weight: 600;
+    font-size: 0.97rem;
+    color: #e2e8f0;
+  }
+  
+  .email-modal-date {
+    font-size: 0.8rem;
+    color: #94a3b8;
+  }
+  
+  .email-modal-close {
+    border: none;
+    background: rgba(15, 23, 42, 0.9);
+    color: #e2e8f0;
+    border-radius: 999px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  
+  .email-modal-close:hover {
+    background: rgba(51, 65, 85, 0.95);
+    transform: translateY(-1px);
+  }
+  
+  .email-modal-hero {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 8px 0 10px;
+    border: 1px solid rgba(30, 64, 175, 0.65);
+  }
+  
+  .email-modal-hero img {
+    max-width: 100%;
+    display: block;
+    height: auto;
+  }
+  
+  .email-modal-sim {
+    position: absolute;
+    inset: 10px 10px auto auto;
+    background: rgba(15, 23, 42, 0.88);
+    color: #e2e8f0;
+    font-size: 0.76rem;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.6);
+  }
+  
+  .email-modal-frame-wrap {
+    flex: 1;
+    margin-top: 4px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(30, 64, 175, 0.4);
+    background: #020617;
+  }
+  
+  .email-modal-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  .email-modal-fallback {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #cbd5f5;
+  }
+  

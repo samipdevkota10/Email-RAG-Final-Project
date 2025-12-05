@@ -1,0 +1,15 @@
+fastapi==0.103.1
+uvicorn==0.23.2
+sqlalchemy==2.0.20
+pydantic==2.3.0
+pydantic-settings==2.0.3
+python-dotenv==1.0.0
+psycopg2-binary==2.9.7
+prometheus-client==0.17.1
+openai
+lxml
+playwright
+requests
+Pillow
+torch
+open-clip-torch

@@ -1,0 +1,15 @@
+:root { font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; }
+.wrap { max-width: 900px; margin: 40px auto; padding: 0 16px; }
+.row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
+.small { font-size: 0.9rem; }
+.input { flex: 1; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; }
+.btn { padding: 10px 14px; border: 0; background: #111; color: #fff; border-radius: 8px; cursor: pointer; }
+.btn:disabled { opacity: .5; cursor: default; }
+.link { background: none; border: none; color: #0a66c2; cursor: pointer; }
+.chk { display: inline-flex; align-items: center; gap: 6px; }
+.muted { color: #666; }
+.list { margin: 12px 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.card { border: 1px solid #eee; border-radius: 10px; padding: 12px; }
+.date { margin-left: auto; color: #888; }
+.snippet { margin-top: 6px; }
+.html { padding: 10px; border: 1px dashed #ddd; border-radius: 8px; margin-top: 8px; background: #fafafa; }

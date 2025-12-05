@@ -1,0 +1,169 @@
+Project Summary
+
+In today’s day and age of mass marketing and having a broad consumer appeal, marketing campaigns have become bland, untargeted and deeply impersonal. Hyper-personalized campaigns have become a way of gaining an edge on competitors.  Email Intelligence RAG is an intelligence tool that turns large number of marketing emails, subject lines, HTML bodies and images into a searchable, explainable knowledgebase for marketers and analysts. Instead of shifting through large amounts of unstructured email campaigns, this tool allows for users to ask natural language queries and immediately explore results. This system aims to surface competitive signals, creative patterns and promotion trends from otherwise noisy, unstructured content allowing for faster and better-informed decisions.
+	Email Intelligence RAG is a web system with a Python FastAPI backend and a lightweight React frontend. The email content is stored in a PostgreSQL database and, using SQL filters and semantic retrieval, users can directly query the database of emails to get natural language responses in a familiar chat-like UI. Answers are returned with citations to specific emails in the database.
+Significance
+
+This project sits at the intersection of information retrieval and data engineering. This project demonstrates how large amounts of messy, noisy data can be used to draw insights. It connects several core ideas like databases, information retrieval, Natural Language Processing, applied machine learning and full stack software engineering, which reflect current industry information retrieval systems. The applications for this system go beyond just analysis of HTML and text data but tackles the problem data cleaning, hybrid retrieval (keyword + embedding search) and multimodal feature extraction (text + image) which has broader implications in the field of computer science. Within core computer science principles, it relates to:
+-	Databases and information retrieval: Efficient storage, indexing, and querying of records
+-	Machine learning: Embedding models and clustering for extraction of information.
+-	Human Computer Interaction: A conversational interface that provides explainable, source backed information
+The project demonstrates a real-world application of RAG systems for business intelligence, which is an area of increasing industry interest.
+Required Tools & Availability
+Hardware and OS: The project is built on a Mac laptop (Apple Silicon, Mac OS Sequoia 15.5). This machine runs VS code  1.104.0 and makes use of local containers for PostgreSQL. For On campus demos, I will be using my personal machine.
+Languages and Frameworks:
+-	Backend: Python 3.11 with FastAPI 0.116.1 and Uvicorn  0.35
+-	Frontend: React (Vite) with Typescript 5.9.2 and Node.js 20
+Datastores and Search:
+-	PostgreSQL 15 with pgvector extension for email storage, extracted metadata, vector embeddings. 
+LLM/ ML Integration:
+-	OpenAI 1.93.1 Text Embedding Model for embeddings
+-	OpenAI 1.93.1 Chat complete for response generation
+-	Scikit-learn 4.12.0.88, OpenCV 1.7.2
+ 
+All the tools are open source or already available, hosted APIs are accessible.
+Email Corpus:
+The database with the email corpus is available through Backstroke; The database with the emails contains the following fields: received_datetime (date), from_name (Plaintext field specifying the sender’s name), header_text (Plaintext), sinppet_text (Plaintext), body_html (Plaintext)
+Demonstration Plans
+
+Demonstration of this will be done via Zoom in the DePauw Linuz lab. Depending on the feature either a live demonstration will be done, or I will show a time lapsed screen recording of the feature. Since there is a time constraint, I have chosen to go with the time lapsed screen recordings depending on the optimization and query speed of the feature. I will draw attention to the relevant parts of the demonstration if a time lapsed video is to be shared in class.
+Qualifications
+
+I had the chance to be a part of a Software Engineering Accelerator program the summer of my sophomore where I had the chance to build 7 projects in 7 weeks which were primarily focused on JavaScript. I got hands on experience with frontend development and using APIs for various services. This is where I had the chance to build my personal website and a simple AI chatbot using Nodejs. I also learned about RAG systems during this accelerator program; this inspired me to learn about how LLMs can be leveraged to draw insight from data. I built a simple RAG project and deployed it as a part of my personal website. 
+This past summer I had the chance to work as a Software Engineering intern at an AI startup where my work primarily  focused on building automations and working with a database which contained marketing emails from various retail brands. As my intern project I was tasked to find ways to leverage this corpus of data. My final project was a FastAPI web application that would do a quick analysis of the emails of a specific company and extract brand specific information from those emails. My knowledge of specific data mining concepts like vector embedding and semantic search come from taking the Data Mining class my junior year.
+Project Specifications
+
+Functional Specifications
+
+The users will be able to perform the following functions:
+
+1.	User Queries: Accept natural language questions about the email marketing campaigns of various retailers
+2.	Retrieval: Perform a similarity search over header_text + sinppet_text. Apply SQL filters (Ex Date)
+3.	Information Extraction: The users will receive information from the knowledgebase.
+
+User Interface Specification
+The user interface is going to be a React based chat window. The UI is going to consist of:
+1.	User input field (query)
+2.	Chat like message showing system response
+3.	Chat response will include information summary
+Technical Details
+
+Database Design:
+The system will use a PostgreSQL as the main storage engine, extended with pgvector for similarity search. The schema stays lightweight. 
+Emails Table:
+-	Id (Primary key, Serial)
+-	received_datetime (timestamp)
+-	header_text (text)
+-	sinppet_text (text)
+-	body_html (text)
+-	embedding (vector)
+
+This design avoids derived tables, All the extracted insights are computed dynamically and returned in API response, not persisted. This keeps the database clean and avoids issues with stale precomputed fields.
+
+Data Ingestion and Preprocessing:
+The data in the header_text and the sinppet_text fields will be cleaned to make for clean inputs to create embeddings and the Hero image from the body HTML will be extracted by selecting the largest full width <img> tag. The Images will be fetched and analyzed to extract data. After the data ingestion the embeddings will be generated for header_text + sinppet_text and stored in the embedding column. 
+
+Retrieval:
+When the users send in the queries, the queries will be embedded and compared with the stored email embeddings. Cosine Similarity will be used in pgvector to determine the sematic similarity. Other filters like SQL conditions will be added to return the top-k candidate emails that are semantically and contextually relevant.
+
+Backend (Python FastAPI):
+FastAPI will provide endpoints to tie together the retrieval and augmentation. The embedding generation and the retrieval logic will be handled here. This will produce a structured JSON response for the frontend.
+
+Frontend (React):
+The React front end will focus on a chat style experience where the user will submit a query, and the backend will produce a structured JSON which will then be rendered as a conversational response. Each response will cite specific emails.
+
+Tradeoffs:
+1.	Using a hosted embedding is easier to set up but long-term costs and API dependencies are a risk. Open-Source alternatives can be considered later
+
+
+Developer Work Plan
+
+Week of Sept 12 – Sept 18
+-	Setup a test version of the database with the pgvector extension (Estimated time 2hrs)
+-	Ingest ~ 2000 emails into the database for initial testing (Estimated time 1hr)
+-	Run some test filtering queries to see initial responses (Estimated time 2hrs)
+Total: 5 hours
+Week of Sept 19 – Sept 25
+-	Implement keyword search over header_text and snippet_text (Estimated time 4hrs)
+-	Implement date range filters and keyword search (Estimates time 6hrs)
+-	Build a keyword search API route in FastAPI (Estimated time 3hrs)
+Total: 13 hours 
+Week of Sept 26 – Oct 2
+-	Write preprocessing scripts to clean header_text and snippet_text fields for embedding (Estimated time 3hrs)
+-	Write a script to extract the URL for the hero images in the body_html (Estimated time 5hrs)
+-	Build a React Chat based UI to call /query and render the SQL based results (Estimated time 5hrs)
+Total: 13 hours
+Week of Oct 3 – Oct 9
+-	Generate embeddings for the header_text and snippet_text fields and store them in the database as a pgvector (Estimated time 6hrs)
+-	Create the semantic similarity script using cosinse similarity and add that to a FastAPI endpoint (Estimated time 6hrs)
+Total: 12 hours
+Week of Oct 10 – Oct 16
+-	Fall break
+-	Implement hybrid retrieval system by combining vactor top K results with SQL filters (Estimated time 10hs)
+-	A/B to switch to SQL only vs hybrid for demos (Estimated time 2hrs)
+Total: 12hours
+Week of Oct 17 – Oct 23
+-	Continue progress for checkpoint 3, testing and further implementation of hybrid retrieval (Estimated time 10hrs)
+Total: 10 hours
+Week of Oct 18 – Oct 30
+-	Implement color and information extraction from hero images (Estimated time 6hrs)
+-	React Chat UI improvements to show images and extracted colors and creative styling in emails (Estimated time 5hrs)
+Total :10 hours
+Week of Oct 31 – Nov 6
+-	End to end testing, Latency checks (Estimated time 5 hours)
+-	UI tweaks like responsive layout (Estimated time 3 hours)
+Total: 8 hours
+Total: 8 hours
+Week of Nov 7 – Nov 13
+-	Label ~100 emails with offer information for testing (Estimated time 6hrs)
+-	Build a keyword baseline and evaluation script for precision testing (Estimated time 6hrs)
+Total: 12 hours
+Week of Nov 14- Nov 20 
+-	Continue testing and write evaluation scripts (Estimated time 6hrs)
+-	Add Citations received from the database into the UI (Estimated time 6hrs)
+Total: 12hours
+Week of Nov 21 – Nov 27
+-	Thanksgiving break 
+-	Start work on final report (Estimated time 10hrs)
+Total: 10 hours
+Week of Nov 28 – Dec 4
+-	Prepare and submit final report (Estimated time 10hrs)
+Total:10 hours
+Timeline
+Checkpoint #1 (Sept 25)
+-	I will show and explain the database with the ~2000 ingested emails 
+-	Users will be able to find emails based on simple keyword search (I will show the FastAPI backend returning the keyword search results from the database)
+Checkpoint #2 (Oct 9)
+-	The users will be able to query a chat-based interface (I will demonstrate the React Front end connected to the FastAPI backend and demonstrate some test queries)
+-	Users will be able to run simple semantic search on the header_text and the snippet text (I will demonstrate pgvector similarity search with test queries and explain the results)
+Checkpoint #3 (Oct 30)
+-	I will demonstrate the retrieval pipeline retrieving data from both the vector embeddings and the SQL Filters
+-	The users will be able to search across image and texts (I will demonstrate style and color extraction from hero images and demonstrate a multimodal RAG system)
+Checkpoint #4 (Nov 20):
+-	 I will demonstrate the full RAG chatbot: query → hybrid retrieval → grounded answer.
+-	I will demonstrate citations for all answers.
+-	I will compare baseline (SQL) vs RAG (semantic + filters) results and discuss metrics.
+Future Enhancements
+
+-	Email preview UI. Render the original HTML alongside answers with highlight anchors to show where offers/colors were found.
+-	Open-source embeddings + image embeddings. Swap to local/open models for cost control; add CLIP-style image vectors for creative similarity. 
+-	Deployment on AWS ECS instance and for endpoint support and Deployment on Vercel.
+Ethical Considerations
+
+With AI and RAG transparency and bias can be issues. Considering that, the datastore used for this project is exclusively publicly available marketing materials and omits all personal identification information no recipient addresses, account data, names, or contact details are stored. During ingestion, obvious per-recipient tokens and residual identifiers are discarded. All the answers are grounded in evidence where the UI will cite specific emails (retailers, date, snippet) to support each claim. Minimal query logs are retained for debugging/evaluation only. To reduce model bias and hallucinations, the pipeline is “rules-first” (regex/heuristics for offers and dates), with the LLM used narrowly to normalize/validate text drawn from retrieved snippets. Periodic human spot-checks look for skew across brands, and removal requests will be honored.
+Bibliography
+
+CSC370: Data Mining (FA24)- DePauw University,
+	https://moodle.depauw.edu/course/view.php?id=22773
+“Full RAG Tutorial | AI Chat with YouTube | LangChain, Node.js.” YouTube, 
+www.youtube.com/watch?v=JljlsOJmlCA. Accessed 6 Sept. 2025.
+“FastAPI Course for Beginners.” YouTube,
+ www.youtube.com/watch?v=tLKKmouUams. Accessed 10 Sept. 2025. 
+“Learn RAG From Scratch – Python AI Tutorial from a LangChain Engineer.” YouTube, 
+www.youtube.com/watch?v=sVcwVQRHIc8. Accessed 2 sept. 2025.
+OpenAI. “Text Embedding Models.” OpenAI Platform Documentation, OpenAI, 
+platform.openai.com/docs. 
+pgvector. “pgvector: Open-Source Vector Similarity Search for Postgres.” GitHub, 
+github.com/pgvector/pgvector. 
+Salton, G., A. Wong, and C. S. Yang. “A Vector Space Model for Automatic Indexing.” 
+Communications of the ACM, vol. 18, no. 11, Nov. 1975, pp. 613–620. https://doi.org/10.1145/361219.361220. 

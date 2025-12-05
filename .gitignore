@@ -1,0 +1,22 @@
+# Python / virtualenv
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.DS_Store
+bin/
+lib/
+lib64/
+include/
+share/
+pyvenv.cfg
+
+# Node / frontend
+client/node_modules/
+client/dist/
+src/.hero_cache/
+
+# Editor / tooling
+.vscode/
+.idea/
+*.log
