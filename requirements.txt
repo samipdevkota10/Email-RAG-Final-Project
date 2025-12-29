@@ -8,6 +8,7 @@ psycopg2-binary==2.9.7
 prometheus-client==0.17.1
 openai
 lxml
+beautifulsoup4
 playwright
 requests
 Pillow

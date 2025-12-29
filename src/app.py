@@ -21,6 +21,7 @@ from psycopg2.pool import SimpleConnectionPool  # type: ignore
 
 
 from src.route.eval import router as eval_router
+from src.route.analytics import router as analytics_router
 
 # --- Bootstrapping ------------------------------------------------------------
 load_dotenv()
@@ -524,6 +525,7 @@ app.add_middleware(
 )
 
 app.include_router(eval_router)
+app.include_router(analytics_router)
 
 
 @app.on_event("startup")

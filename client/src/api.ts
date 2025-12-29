@@ -4,7 +4,14 @@ import type {
   VectorSearchRequest,
   ImageSearchResponse,
   ImageTextSearchRequest,
-  ImageUrlSearchRequest
+  ImageUrlSearchRequest,
+  AnalyticsOffersRequest,
+  AnalyticsOffersResponse,
+  AnalyticsSummaryRequest,
+  AnalyticsSummaryResponse,
+  HeadlineStats,
+  DiscountDistribution,
+  WeeklyStat
 } from './types'
 
 const base = '/api' // proxied to FastAPI
@@ -81,6 +88,55 @@ export async function getImageIndexStats() {
   const r = await fetch(`${base}/stats/image-index`)
   if (!r.ok) throw new Error('Image index stats failed')
   return r.json() as Promise<{ embedded: number; with_urls: number; total: number }>
+}
+
+// Analytics APIs
+export async function getAnalyticsOffers(body: AnalyticsOffersRequest): Promise<AnalyticsOffersResponse> {
+  const r = await fetch(`${base}/analytics/offers`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  if (!r.ok) throw new Error(`Analytics offers failed: ${r.status}`)
+  return r.json()
+}
+
+export async function getAnalyticsSummary(body: AnalyticsSummaryRequest): Promise<AnalyticsSummaryResponse> {
+  const r = await fetch(`${base}/analytics/summary`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  if (!r.ok) throw new Error(`Analytics summary failed: ${r.status}`)
+  return r.json()
+}
+
+export async function getAvailableIndustries(): Promise<string[]> {
+  const r = await fetch(`${base}/analytics/industries`)
+  if (!r.ok) throw new Error('Available industries failed')
+  const data = await r.json() as { industries: string[] }
+  return data.industries
+}
+
+// New analytics endpoints for enhanced dashboard
+export async function getHeadlineStats(year: number): Promise<HeadlineStats> {
+  const r = await fetch(`${base}/analytics/stats/headline?year=${year}`)
+  if (!r.ok) throw new Error('Headline stats failed')
+  return r.json()
+}
+
+export async function getDiscountDistribution(year: number): Promise<DiscountDistribution> {
+  const r = await fetch(`${base}/analytics/stats/distributions?year=${year}`)
+  if (!r.ok) throw new Error('Discount distribution failed')
+  return r.json()
+}
+
+export async function getTrends(year: number, industry?: string): Promise<WeeklyStat[]> {
+  const params = new URLSearchParams({ year: String(year) })
+  if (industry) params.append('industry', industry)
+  const r = await fetch(`${base}/analytics/trends?${params}`)
+  if (!r.ok) throw new Error('Trends fetch failed')
+  return r.json()
 }
 
 

@@ -7,7 +7,8 @@ from typing import Optional, Any, Iterable
 from datetime import datetime
 from decimal import Decimal
 
-from ..db import db_session
+# Lazy import to avoid circular dependency
+# db_session will be imported from app module when needed
 def _extract_subject(raw_headers: Optional[str]) -> Optional[str]:
     """
     Safely parse the header blob that we stored as text and extract the Subject.
@@ -76,6 +77,9 @@ class EvalLabelRequest(BaseModel):
 
 @router.get("/next-email", response_model=EvalNextEmailResponse)
 async def eval_next_email():
+    # Lazy import to avoid circular dependency
+    from ..app import db_session
+    
     sql = """
         SELECT e.email_id,
                e.from_name,
@@ -91,7 +95,7 @@ async def eval_next_email():
         ORDER BY random()
         LIMIT 1;
     """
-    with db_session() as (_, __, cur):
+    with db_session() as (_, cur):
         cur.execute(sql)
         row = cur.fetchone()
 
@@ -149,9 +153,12 @@ async def eval_label(payload: EvalLabelRequest):
             labeled_at     = now();
     """
 
+    # Lazy import to avoid circular dependency
+    from ..app import db_session
+    
     params = payload.model_dump()
 
-    with db_session() as (_, conn, cur):
+    with db_session() as (conn, cur):
         cur.execute(sql, params)
         conn.commit()
 
